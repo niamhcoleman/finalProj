@@ -1,13 +1,39 @@
 import React, { Component } from "react";
 import { Route, Link } from "react-router-dom";
+import { Wizard, Steps, Step } from 'react-albus';
+import Navigation from './Navigation';
+import TimeOfDay from './Steps/TimeOfDay';
+import CallSelectSymptoms from './Steps/CallSelectSymptoms';
+import SelectEmotion from './Steps/SelectEmotion';
+import Notes from './Steps/Notes';
 import "./App.css";
-import CallSteps from './CallSteps';
 
 
 
 const Tracking = () => (
   <div>
-    <CallSteps/>
+
+    <Wizard>
+        <Steps>
+          <Step id = "tod">
+            <TimeOfDay/>
+          </Step>
+          <Step id="symptoms">
+            <CallSelectSymptoms/>
+          </Step>
+          <Step id="emotions">
+            <SelectEmotion/>
+          </Step>
+          <Step id="notes">
+            <Notes/>
+          </Step>
+        </Steps>
+        <div id = "buts">
+        <Navigation />
+        </div>
+        
+    </Wizard>
+
     </div>
 );
 
@@ -44,6 +70,7 @@ const History = ({ match }) => (
   </div>
 ); 
  class App extends Component {
+
   render() {
     return (
       <div id ="nav">
@@ -52,8 +79,9 @@ const History = ({ match }) => (
             <Link to="/Tracking">Tracking</Link>
           </li>
           <li>
-          <li><Link to="/History">History</Link></li>
+            <Link to="/History">History</Link>
           </li>
+
           <li>
             <Link to="/Account">Account</Link>
           </li>

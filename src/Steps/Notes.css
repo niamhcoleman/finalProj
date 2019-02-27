@@ -1,0 +1,19 @@
+#notesdiv {
+    margin:auto;
+    padding: 25px;
+
+}
+
+textarea {
+    outline: none;
+    border: 1px solid #CCCCCC !important;
+    background-color: #e3e7ed;
+    color: black;
+    font-weight: bolder;
+    font-size: medium;
+  }
+
+  #temp {
+      height: 130px;
+  }
+

@@ -1,0 +1,31 @@
+input[type=radio] {
+    position: absolute;
+    visibility: hidden;
+    display: none;
+  }
+
+  #timeofdaylabel {
+    border-radius: 25px;
+      min-width: 30%;;
+    background-color: #e3e7ed;
+    color: black;
+    display: inline-block;
+    font-weight: bold;
+    padding: 10px 20px;
+  }
+
+  input[type=radio]:checked + #timeofdaylabel{
+    color:  white;
+    background:  #4CAF50;
+
+  }
+
+  #timeofdayradio {
+    font-size: large;
+    padding-top: 20%;
+    border: black;
+    display: inline-block;
+    overflow: hidden;
+    text-align: center;
+    width:100%;
+  }

@@ -14,7 +14,6 @@
   text-decoration: none;
 }
 
-
 #nav > ul {
   list-style-type: none;
   margin: 0;
@@ -37,9 +36,40 @@
 }
 
 #nav > ul > li a:hover:not(.active) {
-  background-color: #111;
+  background-color: #4CAF50;
 }
 
-.active {
+#nextBut {
   background-color: #4CAF50;
+  width: 50%;
+  padding: 10px;
+  color: white;
+  font-weight: bold;
+  font-size: large;
+  float: right;
+  border-radius: 15px;
+}
+
+#prevBut {
+  background-color: #4CAF50;
+  width: 50%;
+  padding: 10px;
+  color: white;
+  font-weight: bold;
+  font-size: large;
+  float: left;
+  border-radius: 15px;
+}
+
+#buts {
+    bottom: 10px;
+    position: fixed;
+    width: 100%;
+}
+
+#heading {
+  color: slategrey;
+  text-align: center;
+  font-size: large;
+  padding-top: 10px;
 }
