@@ -73,3 +73,11 @@
   font-size: large;
   padding-top: 10px;
 }
+
+#formsummary{
+  color: #4CAF50;
+  font-weight:normal!important;
+  text-align: left!important;
+  font-size: medium;
+  padding-top: 10px;
+}

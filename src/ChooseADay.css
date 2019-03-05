@@ -1,0 +1,17 @@
+.DayPicker {
+    width: 100%!important;
+}
+
+.DayPicker-Month {
+    width: 90%!important;
+}
+
+#nav > div > div > p {
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
+}
+
+#nav > div > div > div > div > div.DayPicker-Months > div > div.DayPicker-Body > div > div.DayPicker-Day.DayPicker-Day--selected {
+    background-color: #4CAF50;
+}

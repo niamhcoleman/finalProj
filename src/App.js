@@ -1,77 +1,36 @@
 import React, { Component } from "react";
 import { Route, Link } from "react-router-dom";
-import { Wizard, Steps, Step } from 'react-albus';
-import Navigation from './Navigation';
-import TimeOfDay from './Steps/TimeOfDay';
-import CallSelectSymptoms from './Steps/CallSelectSymptoms';
-import SelectEmotion from './Steps/SelectEmotion';
-import Notes from './Steps/Notes';
+import ChooseADay from './ChooseADay';
+import Settings from './Settings';
+import TrackingForm from './TrackingForm';
 import "./App.css";
 
 
 
 const Tracking = () => (
   <div>
-
-    <Wizard>
-        <Steps>
-          <Step id = "tod">
-            <TimeOfDay/>
-          </Step>
-          <Step id="symptoms">
-            <CallSelectSymptoms/>
-          </Step>
-          <Step id="emotions">
-            <SelectEmotion/>
-          </Step>
-          <Step id="notes">
-            <Notes/>
-          </Step>
-        </Steps>
-        <div id = "buts">
-        <Navigation />
-        </div>
-        
-    </Wizard>
-
-    </div>
+    <TrackingForm/>
+  </div>
 );
 
 
 const Account = () => (
   <div>
-    <ul>
-      <li>San Francisco</li>
-      <li>Istanbul</li>
-      <li>Tokyo</li>
-    </ul>
+    <Settings/>
   </div>
 );
 
 const History = ({ match }) => (
   <div>
-    <ul>
-      <li>
-        <Link to={`${match.url}/technology`}>Technology</Link>
-      </li>
-      <li>
-        <Link to={`${match.url}/business`}>Business</Link>
-      </li>
-      <li>
-        <Link to={`${match.url}/economics`}>Economics</Link>
-      </li>
-    </ul>
-
-    <Route
-      exact
-      path={`${match.path}/:course`}
-      render={({ match }) => <div> This is {match.params.course} </div>}
-    />
+    <ChooseADay/>
   </div>
-); 
+);
+
  class App extends Component {
 
-  render() {
+
+  render() 
+  {
     return (
       <div id ="nav">
         <ul>

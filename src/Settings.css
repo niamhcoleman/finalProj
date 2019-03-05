@@ -1,12 +1,6 @@
-input[type=radio] {
-    position: absolute;
-    visibility: hidden;
-    display: none;
-  }
-
-  #timeofdaylabel {
+#acclabel {
     border-radius: 25px;
-    min-width: 30%;;
+      min-width: 50%;;
     background-color: #e3e7ed;
     color: black;
     display: inline-block;
@@ -14,15 +8,15 @@ input[type=radio] {
     padding: 10px 20px;
   }
 
-  input[type=radio]:checked + #timeofdaylabel{
+  input[type=radio]:checked + #acclabel{
     color:  white;
     background:  #4CAF50;
 
   }
 
-  #timeofdayradio {
+  #accountradio {
     font-size: large;
-    padding-top: 20%;
+    padding-top: 45%;
     border: black;
     display: inline-block;
     overflow: hidden;

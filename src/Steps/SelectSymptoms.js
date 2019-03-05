@@ -19,11 +19,10 @@ class SelectSymptoms extends React.Component {
         backgroundColor: "red",
       }
 
-
   };
 
   setSelectedSymptom(event) {
-    window.alert(event.target.value);
+    //window.alert(event.target.value);
   }
 
   render() {
@@ -31,7 +30,7 @@ class SelectSymptoms extends React.Component {
     return (
       <div  onChange={this.setSelectedSymptom.bind(this)}>
         
-      <div style = {this.style.symptoms}>
+      <div>
       <form id = "sympForm">
       <p id = "symptomName">{ this.props.value }</p>
       <label class="container">

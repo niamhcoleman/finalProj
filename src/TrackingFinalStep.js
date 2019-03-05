@@ -1,9 +1,10 @@
 import React from 'react';
-import './Notes.css';
 
 class Notes extends React.Component {
+
   continue = e => {
     e.preventDefault();
+    //Send data to API from here
     this.props.nextStep();
   }
   back = e => {
@@ -13,30 +14,26 @@ class Notes extends React.Component {
     
 
   render() {
-    const {values, handleChange} = this.props;
 
+    const {values: {timeofday, symptoms,emotion,notes}} = this.props;
     return (
         <div>
-        <p id = "heading"><u>Is There Anything You Would Like to Add?</u></p>
+        <p id = "heading"><u>Please Review the Following:</u></p>
 
-          <form>
-            <div id = "temp">
-            </div>
-            <div id = "notesdiv">
-            <textarea name="notes" rows="6" cols="45" onChange={handleChange('notes')}>
-            
-            </textarea>
-            </div>
-              
-          </form>
-          <div id = "buts">
+        <p id = "formsummary">Time Of Day: {timeofday} </p>
+        <p id = "formsummary">Symptoms Chosen: {symptoms} </p>
+        <p id = "formsummary">Emotion Chosen: {emotion} </p>
+        <p id = "formsummary">Notes Added: {notes} </p>
+
+        <div id = "buts">
             <button id = "prevBut" onClick = {this.back}>
               Back
             </button>
             <button id = "nextBut" onClick = {this.continue}>
-              Next
+              Confirm
             </button>
           </div>
+          
         </div>
     );
   }

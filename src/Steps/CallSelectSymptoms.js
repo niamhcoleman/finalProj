@@ -3,7 +3,17 @@ import SelectSymptoms from './SelectSymptoms';
 
 
 class CallSelectSymptoms extends React.Component {   
+  continue = e => {
+    e.preventDefault();
+    this.props.nextStep();
+  }
+  back = e => {
+    e.preventDefault();
+    this.props.prevStep();
+  }
+
   render() {
+      const {values, handleChange} = this.props;
       var arr=["Acne", "Vomiting", "Insomnia", "Loss of Appetite", "Bloating"];
       var elements=[];
       for(var i=0;i<arr.length;i++){
@@ -14,7 +24,18 @@ class CallSelectSymptoms extends React.Component {
       return (
         <div> 
           <p id = "heading"><u>What Symptoms do you Have Today?</u></p>
-          {elements}
+          <div onChange = {handleChange('symptoms')}> {elements} </div>
+          
+
+          <div id = "buts">
+          <button id = "prevBut" onClick = {this.back}>
+              Back
+            </button>
+          <button id = "nextBut" onClick = {this.continue}>
+              Next
+            </button>
+        </div>
+
         </div>
     );
 }
