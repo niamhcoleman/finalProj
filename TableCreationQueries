@@ -1,0 +1,33 @@
+CREATE TABLE users (
+user_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+user_email VARCHAR(20),
+user_pass VARCHAR(50)
+)
+
+CREATE TABLE symptoms (
+sym_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+sym_name VARCHAR(20),
+sym_desc VARCHAR(20)
+)
+
+CREATE TABLE emotions (
+emo_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+emo_name VARCHAR(7)
+)
+
+CREATE TABLE entries (
+user_id INT(6),
+entry_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+entry_date DATE(),
+entry_TOD VARCHAR(10),
+emotion_id INT(4),
+notes VARCHAR(50)
+)
+
+CREATE TABLE symptom_entry (
+sym_entry_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+sym_entry_sev VARCHAR(20),
+sym_id VARCHAR(20)
+)
+
+
