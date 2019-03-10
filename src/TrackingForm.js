@@ -89,7 +89,10 @@ export class TrackingForm extends Component {
                     />
                 )
             case 6: return (
-                <h1>Your Information was Successfully Logged!</h1>
+                <div>
+                    <TrackingForm/>
+                </div>
+                
             )
         }
 

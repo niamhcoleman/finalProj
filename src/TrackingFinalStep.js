@@ -3,7 +3,6 @@ import React from 'react';
 class Notes extends React.Component {
 
   continue = e => {
-    e.preventDefault();
     //Send data to API from here
     this.props.nextStep();
   }

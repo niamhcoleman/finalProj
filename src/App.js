@@ -48,7 +48,7 @@ const History = ({ match }) => (
 
         <Route path="/Tracking" exact component={Tracking} />
         <Route path="/History" component={History}/>
-        <Route path="/Account" component={Account} />
+        <Route path="/Account" component={Account}/>
       </div>
     );
   }
