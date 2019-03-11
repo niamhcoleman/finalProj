@@ -57,17 +57,20 @@ def logentry():
 		emotion_id = request.args["emotion_id"]
 		notes = request.args["notes"]
 
-		#symptom_entry_id = max id + 1
+		#symptom_entry_id = max id in table + 1
 		query = "SELECT MAX(sym_entry_id) AS maximum from symptom_entry LIMIT 1;"
 		cursor.execute(query)
 		result = cursor.fetchall()
-
+		if result[0][0] is None:
+			new_sym_entry_id = 0
+		else:
+			new_sym_entry_id = result[0][0] + 1
 
 		query = "INSERT INTO entries (user_id, entry_date, entry_TOD, emotion_id, symptom_entry_id, notes) VALUES (%s, %s, %s, %s, %s, %s);"
 		cursor.execute(query, (user_id, formatted_date, entry_TOD, emotion_id, new_sym_entry_id, notes))
 		mydb.commit()
+
 		#Next, symptom entries table is updated with contents of a list containing symptom id and severity.
-		#Need to know how to know the symptom entry id to associate with each input.
 		myList = [1, 2, 3]
 		for row in myList:
 			query = "INSERT INTO symptom_entry (sym_entry_id, sym_id) VALUES (%s, %s);"
