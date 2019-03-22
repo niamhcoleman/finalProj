@@ -1,3 +1,5 @@
+#NEEDS VALIDATION OF INPUTS
+
 import os
 from flask import Flask, jsonify, request, send_from_directory
 from werkzeug import secure_filename
@@ -15,7 +17,7 @@ mydb = mysql.connector.connect(
   user="root",
   passwd="",
   host="localhost", 
-  database="projectdb"
+  database="fyp"
 )
 
 cursor = mydb.cursor()
@@ -24,18 +26,18 @@ cursor = mydb.cursor()
 @app.route('/account/getuserinfo/<user_id>', methods=['GET'])
 def getuserinfo(user_id):
 	query = "SELECT user_name, user_email FROM users WHERE user_id = %s;"
-	cursor.execute(query % (user_id))
+	cursor.execute(query % user_id)
 	result = []
 	for (user_name, user_email) in cursor:
 		result.append({"user_name": user_name, "user_email": user_email})
 	return jsonify(result)
 
 
-#change user passwor
+#change user password
 @app.route('/account/changepassword/<new_password>/<user_id>', methods=['POST'])
 def changepassword(new_password,user_id):
 	try:	
-		query = "UPDATE users SET user_pass = %s WHERE user_id = %s;"
+		query = "UPDATE users SET user_password = %s WHERE user_id = %s;"
 		cursor.execute(query % (new_password, user_id))
 		mydb.commit()
 		return "{'status': 'success'}"
@@ -43,22 +45,58 @@ def changepassword(new_password,user_id):
 		error = "{'error': " + str(e) + "}"
 		return error
 
-#adding to the entries table
-#NOTE THAT DATE NEEDS TO COME IN FORM YEAR-MONTH-DAY atm
-#Problem with this is getting the max symptom id to generate the symptom entry id. the rest works
+#returning info from a particular day
+@app.route('/history/getdate/<user_id>/<target_date>/<target_tod>', methods = ['GET'])
+def getdate(user_id, target_date,target_tod):
+	try:
+		now = datetime.now()
+		target_date = now.strftime('%Y-%m-%d')
+		user_id = 1
+		target_tod = "afternoon"
+		query = "SELECT symptom_entry_id FROM entries WHERE user_id = '%s' AND entry_date = '%s' AND entry_tod = '%s';"
+		cursor.execute(query % (user_id, target_date, target_tod))
+		result = cursor.fetchall()
+		symptom_entry_id = result[0][0]
+
+		query = "SELECT symptom_entry_sev, sym_id FROM symptomentry WHERE sym_entry_id = '%s';"
+		cursor.execute(query % (symptom_entry_id))
+		result = cursor.fetchall()
+
+		#result contains a list of lists in the format [[severity, symptom id] , [...]...]
+
+		list = []
+		for record in result:
+			id = record[1]
+			query = "SELECT sym_name FROM symptoms WHERE sym_id = '%s';"
+			cursor.execute(query % id)
+			symptomName = cursor.fetchone()
+
+			list.append([record[0], symptomName[0]])
+
+		#list now contains a list of lists with results associated with morning
+		#list has the format of [[severity, name]]
+
+		return jsonify(list)
+
+
+	except Exception as e:
+		error = "{'error': " + str(e) + "}"
+		return error
+
+
+#logging symptoms
 @app.route('/tracking/logentry', methods = ['POST'])
 def logentry():
 	try:
-
 		user_id = request.args["user_id"]
 		now = datetime.now()
-		formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
-		entry_TOD = request.args["entry_TOD"]
-		emotion_id = request.args["emotion_id"]
+		formatted_date = now.strftime('%Y-%m-%d')
+		entry_tod = request.args["entry_tod"]
+		entry_emo_id = request.args["entry_emo_id"]
 		notes = request.args["notes"]
 
-		#symptom_entry_id = max id in table + 1
-		query = "SELECT MAX(sym_entry_id) AS maximum from symptom_entry LIMIT 1;"
+		# symptom_entry_id = max id in table + 1
+		query = "SELECT MAX(sym_entry_id) AS maximum from symptomentry LIMIT 1;"
 		cursor.execute(query)
 		result = cursor.fetchall()
 		if result[0][0] is None:
@@ -66,32 +104,33 @@ def logentry():
 		else:
 			new_sym_entry_id = result[0][0] + 1
 
-		query = "INSERT INTO entries (user_id, entry_date, entry_TOD, emotion_id, symptom_entry_id, notes) VALUES (%s, %s, %s, %s, %s, %s);"
-		cursor.execute(query, (user_id, formatted_date, entry_TOD, emotion_id, new_sym_entry_id, notes))
+		query = "INSERT INTO entries (user_id, entry_date, entry_tod, entry_emo_id, symptom_entry_id, notes) VALUES (%s, %s, %s, %s, %s, %s);"
+		cursor.execute(query, (user_id, formatted_date, entry_tod, entry_emo_id, new_sym_entry_id, notes))
 		mydb.commit()
 
-		#Next, symptom entries table is updated with contents of a list containing symptom id and severity.
-		myList = [1, 2, 3]
-		for row in myList:
-			query = "INSERT INTO symptom_entry (sym_entry_id, sym_id) VALUES (%s, %s);"
-			cursor.execute(query, (new_sym_entry_id, row))
+
+		#this needs to up updated so that the list can come from the user.
+		symptoms = [['acne', 2], ['insomnia' , 2]]
+		updatedlist = []
+
+		for symptom in symptoms:
+			sym_name = symptom[0]
+			query = "SELECT sym_id FROM symptoms WHERE sym_name = '%s';"
+			cursor.execute(query % sym_name)
+			result = cursor.fetchone()
+			updatedlist.append([result[0], symptom[1]])
+			#at this point, updated list is a list of lists
+			#with the format: [[symptom id, symptom severity],[symptom id, symptom severity], .....]
+
+		for record in updatedlist:
+			query = "INSERT INTO symptomentry (sym_entry_id, symptom_entry_sev, sym_id) VALUES ( %s, %s, %s);"
+			cursor.execute(query, (new_sym_entry_id, record[1], record[0]))
 			mydb.commit()
 		return "{'status': 'success'}"
+
 	except Exception as e:
 		error = "{'error': " + str(e) + "}"
 		return error
 
 
-##########
-@app.errorhandler(404)
-def not_found(error=None):
-    message = {
-        'status': 404,
-        'message': 'Not Found: ' + request.url,
-    }
-    resp = jsonify(message)
-    resp.status_code = 404
-
-    return resp	
-		
 app.run(port=5001, debug=True)
