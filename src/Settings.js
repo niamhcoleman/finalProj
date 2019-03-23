@@ -1,18 +1,36 @@
 import React from 'react';
 import './Settings.css';
 
+const getinfoCall = ' http://127.0.0.1:5001/account/getuserinfo/1'
+
 class Settings extends React.Component {
     constructor(props) {
         super(props);
-    
 
       }
     
 
+      handleChange(event) {
+        if (event.target.value == "viewinfo"){
+            fetch(getinfoCall)
+            .then((result) => {
+                return result.text();
+            }).then((textResult) => {
+                window.alert(textResult)
+            })
+        }
+        else if (event.target.value == "changepass") {
+            window.alert("");
+        }
+        else {
+            window.alert("You clicked log out. This function has not yet been implemented. Try again later! ")
+        }
+      }
+
   render() {
 
     return (
-        <div>
+        <div onChange={this.handleChange.bind(this)}>
             <form>
                 <div id = "accountradio" >
                     <input type = "radio" value = "viewinfo" id = "viewinfo" name = "selector"/>
