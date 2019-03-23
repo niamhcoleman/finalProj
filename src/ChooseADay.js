@@ -35,12 +35,12 @@ export default class ChooseADay extends React.Component {
               after: new Date(),
             },
           ]}
-          
-        />
+          />
         <p>
           {this.state.selectedDay ? this.state.selectedDay.toLocaleDateString() : 'Please Select a Day.'}
         </p>
-      </div>
+
+        </div>
     );
   }
 }

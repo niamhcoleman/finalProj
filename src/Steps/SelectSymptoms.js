@@ -28,21 +28,21 @@ class SelectSymptoms extends React.Component {
   render() {
 
     return (
-      <div  onChange={this.setSelectedSymptom.bind(this)}>
+      <div onChange={this.setSelectedSymptom.bind(this)}>
         
       <div>
       <form id = "sympForm">
       <p id = "symptomName">{ this.props.value }</p>
       <label class="container">
-            <input align = "left" type="radio" name="radio" value = {this.props.value + " low"}/>
+            <input align = "left" type="radio" name="radio" value = {this.props.value + " 1"}/>
             <span class="checkmark" style= {this.style.low}></span>
             </label>
             <label class="container">
-                <input align = "center"  type="radio" name="radio" value =  {this.props.value + " mod"}/>
+                <input align = "center"  type="radio" name="radio" value =  {this.props.value + " 2"}/>
             <span class="checkmark" style= {this.style.mod} ></span>
             </label>
             <label class="container">
-                <input align = "right"  type="radio" name="radio"  value =  {this.props.value + " sev"}/>
+                <input align = "right"  type="radio" name="radio"  value =  {this.props.value + " 3"}/>
             <span class="checkmark" style= {this.style.sev}></span>
             </label>
       </form>
