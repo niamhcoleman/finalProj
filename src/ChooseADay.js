@@ -19,8 +19,15 @@ export default class ChooseADay extends React.Component {
     });
     if (day != undefined)
     {
-      //communicate with API. Find and display the information about the chosen date.
+            //communicate with API. Find and display the information about the chosen date.
+            fetch('http://127.0.0.1:5001/history/getdayinfo/1/' + "2019-03-25")
+            .then((result) => {
+                return result.text();
+            }).then((textResult) => {
+                window.alert(textResult)
+            })
     }
+    
   }
 
   render() {
@@ -28,6 +35,7 @@ export default class ChooseADay extends React.Component {
     return (
       <div>
         <DayPicker
+          format="YYYY//MM//DD"
           selectedDays={this.state.selectedDay}
           onDayClick={this.handleDayClick}
           disabledDays={[
