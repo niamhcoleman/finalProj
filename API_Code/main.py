@@ -45,39 +45,76 @@ def changepassword(new_password,user_id):
 		error = "{'error': " + str(e) + "}"
 		return error
 
+
 #returning info from a particular day
-@app.route('/history/getdate/<user_id>/<target_date>/<target_tod>', methods = ['GET'])
-def getdate(user_id, target_date,target_tod):
+@app.route('/history/getdayinfo/<user_id>/<target_date>/', methods = ['GET'])
+def getdayinfo(user_id, target_date):
 	try:
-		now = datetime.now()
-		target_date = now.strftime('%Y-%m-%d')
-		user_id = 1
-		target_tod = "afternoon"
+		#temporary for testing hardcoded
+		#now = datetime.now()
+		#target_date = now.strftime('%Y-%m-%d')
+
+
 		query = "SELECT symptom_entry_id FROM entries WHERE user_id = '%s' AND entry_date = '%s' AND entry_tod = '%s';"
-		cursor.execute(query % (user_id, target_date, target_tod))
+
+		# get symptom entry id for morning entries
+		cursor.execute(query % (user_id, target_date, 'morning'))
 		result = cursor.fetchall()
-		symptom_entry_id = result[0][0]
+		if result is not None:
+			morning_symptom_entry_id = result[0][0]
 
-		query = "SELECT symptom_entry_sev, sym_id FROM symptomentry WHERE sym_entry_id = '%s';"
-		cursor.execute(query % (symptom_entry_id))
+		# get symptom entry id for afternoon entries
+		cursor.execute(query % (user_id, target_date, 'afternoon'))
 		result = cursor.fetchall()
+		if result is not None:
+			afternoon_symptom_entry_id = result[0][0]
 
-		#result contains a list of lists in the format [[severity, symptom id] , [...]...]
+		# get symptom entry id for evening entries
+		cursor.execute(query % (user_id, target_date, 'evening'))
+		result = cursor.fetchall()
+		if result is not None:
+			evening_symptom_entry_id = result[0][0]
 
-		list = []
-		for record in result:
-			id = record[1]
-			query = "SELECT sym_name FROM symptoms WHERE sym_id = '%s';"
-			cursor.execute(query % id)
-			symptomName = cursor.fetchone()
+		# get symptom entry id for night entries
+		cursor.execute(query % (user_id, target_date, 'night'))
+		result = cursor.fetchall()
+		if result is not None:
+			night_symptom_entry_id = result[0][0]
 
-			list.append([record[0], symptomName[0]])
 
-		#list now contains a list of lists with results associated with morning
-		#list has the format of [[severity, name]]
+		result_dict = {}
 
-		return jsonify(list)
+		#morning entries into dict
+		if morning_symptom_entry_id is not None:
+			query = "SELECT symptom_entry_sev, sym_id FROM symptomentry WHERE sym_entry_id = '%s';"
+			cursor.execute(query % (morning_symptom_entry_id))
+			result = cursor.fetchall()
+			result_dict['morning'] = result
 
+
+		#afternoon entries into dict
+		if afternoon_symptom_entry_id is not None:
+			query = "SELECT symptom_entry_sev, sym_id FROM symptomentry WHERE sym_entry_id = '%s';"
+			cursor.execute(query % (afternoon_symptom_entry_id))
+			result = cursor.fetchall()
+			result_dict['afternoon'] = result
+
+		#evening entries into dict
+		if evening_symptom_entry_id is not None:
+			query = "SELECT symptom_entry_sev, sym_id FROM symptomentry WHERE sym_entry_id = '%s';"
+			cursor.execute(query % (evening_symptom_entry_id))
+			result = cursor.fetchall()
+			result_dict['evening'] = result
+
+
+		#night entries into dict
+		if night_symptom_entry_id is not None:
+			query = "SELECT symptom_entry_sev, sym_id FROM symptomentry WHERE sym_entry_id = '%s';"
+			cursor.execute(query % (night_symptom_entry_id))
+			result = cursor.fetchall()
+			result_dict['night'] = result
+
+		return jsonify(result_dict)
 
 	except Exception as e:
 		error = "{'error': " + str(e) + "}"
