@@ -50,71 +50,105 @@ def changepassword(new_password,user_id):
 @app.route('/history/getdayinfo/<user_id>/<target_date>/', methods = ['GET'])
 def getdayinfo(user_id, target_date):
 	try:
-		#temporary for testing hardcoded
-		#now = datetime.now()
-		#target_date = now.strftime('%Y-%m-%d')
-
+		result_dict = {}
 
 		query = "SELECT symptom_entry_id FROM entries WHERE user_id = '%s' AND entry_date = '%s' AND entry_tod = '%s';"
 
-		# get symptom entry id for morning entries
+		#morning
 		cursor.execute(query % (user_id, target_date, 'morning'))
-		result = cursor.fetchall()
-		if result is not None:
-			morning_symptom_entry_id = result[0][0]
+		morning = cursor.fetchall()
 
-		# get symptom entry id for afternoon entries
+		#afternoon
 		cursor.execute(query % (user_id, target_date, 'afternoon'))
-		result = cursor.fetchall()
-		if result is not None:
-			afternoon_symptom_entry_id = result[0][0]
+		afternoon = cursor.fetchall()
 
-		# get symptom entry id for evening entries
+		#evening
 		cursor.execute(query % (user_id, target_date, 'evening'))
-		result = cursor.fetchall()
-		if result is not None:
-			evening_symptom_entry_id = result[0][0]
+		evening = cursor.fetchall()
 
-		# get symptom entry id for night entries
+		#night
 		cursor.execute(query % (user_id, target_date, 'night'))
-		result = cursor.fetchall()
-		if result is not None:
-			night_symptom_entry_id = result[0][0]
+		night = cursor.fetchall()
 
-
-		result_dict = {}
-
-		#morning entries into dict
-		if morning_symptom_entry_id is not None:
+		if morning:
+			morning_symptom_entry_id = morning[0][0]
 			query = "SELECT symptom_entry_sev, sym_id FROM symptomentry WHERE sym_entry_id = '%s';"
-			cursor.execute(query % (morning_symptom_entry_id))
+			cursor.execute(query % morning_symptom_entry_id)
 			result = cursor.fetchall()
-			result_dict['morning'] = result
+			#[[symptom severity, symptom id]]
+			#swap symptom id for the symptom name
+			x = []
+			for entry in result:
+				id = entry[1]
+				severity = entry[0]
+				query = "SELECT sym_name FROM symptoms WHERE sym_id = '%s';"
+				cursor.execute(query % id)
+				result = cursor.fetchall()
+				name = result[0][0]
+				x.append([severity,name])
+			result_dict['morning'] = x
 
 
-		#afternoon entries into dict
-		if afternoon_symptom_entry_id is not None:
+		if afternoon:
+			afternoon_symptom_entry_id = afternoon[0][0]
 			query = "SELECT symptom_entry_sev, sym_id FROM symptomentry WHERE sym_entry_id = '%s';"
-			cursor.execute(query % (afternoon_symptom_entry_id))
+			cursor.execute(query % afternoon_symptom_entry_id)
 			result = cursor.fetchall()
-			result_dict['afternoon'] = result
+			# [[symptom severity, symptom id]]
+			# swap symptom id for the symptom name
+			x = []
+			for entry in result:
+				id = entry[1]
+				severity = entry[0]
+				query = "SELECT sym_name FROM symptoms WHERE sym_id = '%s';"
+				cursor.execute(query % id)
+				result = cursor.fetchall()
+				name = result[0][0]
+				x.append([severity, name])
+			result_dict['afternoon'] = x
 
-		#evening entries into dict
-		if evening_symptom_entry_id is not None:
+		if evening:
+			evening_symptom_entry_id = evening[0][0]
 			query = "SELECT symptom_entry_sev, sym_id FROM symptomentry WHERE sym_entry_id = '%s';"
 			cursor.execute(query % (evening_symptom_entry_id))
 			result = cursor.fetchall()
-			result_dict['evening'] = result
+			# [[symptom severity, symptom id]]
+			# swap symptom id for the symptom name
+			x = []
+			for entry in result:
+				id = entry[1]
+				severity = entry[0]
+				query = "SELECT sym_name FROM symptoms WHERE sym_id = '%s';"
+				cursor.execute(query % id)
+				result = cursor.fetchall()
+				name = result[0][0]
+				x.append([severity, name])
+			result_dict['evening'] = x
 
 
-		#night entries into dict
-		if night_symptom_entry_id is not None:
+		if night:
+			night_symptom_entry_id = result[0][0]
 			query = "SELECT symptom_entry_sev, sym_id FROM symptomentry WHERE sym_entry_id = '%s';"
 			cursor.execute(query % (night_symptom_entry_id))
 			result = cursor.fetchall()
-			result_dict['night'] = result
+			# [[symptom severity, symptom id]]
+			# swap symptom id for the symptom name
+			x = []
+			for entry in result:
+				id = entry[1]
+				severity = entry[0]
+				query = "SELECT sym_name FROM symptoms WHERE sym_id = '%s';"
+				cursor.execute(query % id)
+				result = cursor.fetchall()
+				name = result[0][0]
+				x.append([severity, name])
+			result_dict['night'] = x
+
+		#result_dict consists of a dict with format: { "evening": [ [ 2, "acne" ], [ 2, "insomnia" ] ], "morning": [ [ 2, "acne" ] ], "night": [ [ 2, "acne" ], [ 2, "insomnia" ] ] }
 
 		return jsonify(result_dict)
+
+
 
 	except Exception as e:
 		error = "{'error': " + str(e) + "}"
@@ -122,6 +156,8 @@ def getdayinfo(user_id, target_date):
 
 
 #logging symptoms
+#some of this is still hardcoded i.e. symptoms list
+#rn expects symptoms as list from request. troubleshoot tonight
 @app.route('/tracking/logentry', methods = ['POST'])
 def logentry():
 	try:
@@ -131,11 +167,15 @@ def logentry():
 		entry_tod = request.args["entry_tod"]
 		entry_emo_id = request.args["entry_emo_id"]
 		notes = request.args["notes"]
+		symptoms = request.args.getlist('symptoms')
+
+		#symptoms contains a list of strings e.g. [ "acne, 2", "insomnia , 2" ]
 
 		# symptom_entry_id = max id in table + 1
 		query = "SELECT MAX(sym_entry_id) AS maximum from symptomentry LIMIT 1;"
 		cursor.execute(query)
 		result = cursor.fetchall()
+
 		if result[0][0] is None:
 			new_sym_entry_id = 0
 		else:
@@ -145,19 +185,30 @@ def logentry():
 		cursor.execute(query, (user_id, formatted_date, entry_tod, entry_emo_id, new_sym_entry_id, notes))
 		mydb.commit()
 
+		# symptoms contains a list of strings e.g. [ "acne, 2", "insomnia , 2" ]
+		# this needs to be changed to the format: [['acne', 2], ['insomnia', 2]] i.e. a list of lists
 
-		#this needs to up updated so that the list can come from the user.
-		symptoms = [['acne', 2], ['insomnia' , 2]]
+
+		symList = []
+		for symptom in symptoms:
+			x = symptom.split()
+			x[1] = int(x[1])
+			symList.append(x)
+
+		# symList now contains the format : [ [ "acne", 2 ], [ "insomnia,", 2 ] ]
+
+		#symptoms = [['acne', 2], ['insomnia', 2]]
 		updatedlist = []
 
-		for symptom in symptoms:
+		for symptom in symList:
 			sym_name = symptom[0]
 			query = "SELECT sym_id FROM symptoms WHERE sym_name = '%s';"
 			cursor.execute(query % sym_name)
 			result = cursor.fetchone()
 			updatedlist.append([result[0], symptom[1]])
-			#at this point, updated list is a list of lists
-			#with the format: [[symptom id, symptom severity],[symptom id, symptom severity], .....]
+		# at this point, updated list is a list of lists
+		# with the format: [[symptom id, symptom severity],[symptom id, symptom severity], .....]
+
 
 		for record in updatedlist:
 			query = "INSERT INTO symptomentry (sym_entry_id, symptom_entry_sev, sym_id) VALUES ( %s, %s, %s);"
