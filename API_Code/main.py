@@ -1,5 +1,3 @@
-#NEEDS VALIDATION OF INPUTS
-
 import os
 from flask import Flask, jsonify, request, send_from_directory
 from werkzeug import secure_filename
