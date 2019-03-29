@@ -13,7 +13,6 @@ const Tracking = () => (
   </div>
 );
 
-
 const Account = () => (
   <div>
     <Settings/>

@@ -21,14 +21,11 @@ class SelectSymptoms extends React.Component {
 
   };
 
-  setSelectedSymptom(event) {
-    //window.alert(event.target.value);
-  }
 
   render() {
 
     return (
-      <div onChange={this.setSelectedSymptom.bind(this)}>
+      <div>
         
       <div>
       <form id = "sympForm">

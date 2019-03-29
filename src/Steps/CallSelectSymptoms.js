@@ -14,7 +14,7 @@ class CallSelectSymptoms extends React.Component {
 
   render() {
       const {values, handleChange} = this.props;
-      var arr=["Acne", "Vomiting", "Insomnia", "Loss of Appetite", "Bloating"];
+      var arr=["Acne", "Vomit", "Bloat", "Indigestion"];
       var elements=[];
       for(var i=0;i<arr.length;i++){
            // push the component to elements
