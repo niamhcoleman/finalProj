@@ -2,7 +2,7 @@
 Code for final year project
 
 Dependencies:
-- react-day-picker
+- react-calendar
 
 Technologies:
 - Reactjs
