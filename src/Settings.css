@@ -1,25 +1,60 @@
-#acclabel {
+#viewinfo {
     border-radius: 25px;
-      min-width: 50%;;
+    min-width: 50%;;
     background-color: #e3e7ed;
     color: black;
     display: inline-block;
     font-weight: bold;
     padding: 10px 20px;
-  }
-
-  input[type=radio]:checked + #acclabel{
-    color:  white;
-    background:  #4CAF50;
-
-  }
-
-  #accountradio {
     font-size: large;
-    padding-top: 45%;
     border: black;
     display: inline-block;
     overflow: hidden;
     text-align: center;
-    width:100%;
   }
+
+  #changepass {
+    border-radius: 25px;
+    min-width: 50%;;
+    background-color: #e3e7ed;
+    color: black;
+    font-weight: bold;
+    padding: 10px 20px;
+    font-size: large;
+    border: black;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  input[type="button"]:active {
+    color:  white!important;
+    background:  #4CAF50!important;
+  }
+
+  #accDiv
+  {
+    width:100%;
+    padding-top: 25%;
+    display: inline-block;
+    text-align: center;
+  }
+
+  #passchange {
+    border-radius: 60px
+  }
+
+  #pass_submit
+  {
+    border-radius: 25px;
+    min-width: 50%;;
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    font-size: large;
+    border: black;
+    overflow: hidden;
+    text-align: center;
+  }
+
+
