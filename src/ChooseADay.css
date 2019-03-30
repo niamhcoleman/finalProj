@@ -1,52 +1,21 @@
-.DayPicker {
-    width: 100%!important;
+#nav > div > div > div {
+  width:100%!important;
+  padding: 5%!important;
 }
 
-.DayPicker-Month {
-    width: 90%!important;
+#nav > div > div > div > div.react-calendar__navigation > button.react-calendar__navigation__label {
+font-weight: bolder;
+font-size: large;
 }
 
-#nav > div > div > p {
-    text-align: center;
-    font-size: large;
-    font-weight: bold;
+#nav > div > div > div > div.react-calendar__month-view > div > div > div.react-calendar__month-view__days > button.react-calendar__tile.react-calendar__tile--active.react-calendar__tile--rangeStart.react-calendar__tile--rangeEnd.react-calendar__tile--rangeBothEnds.react-calendar__month-view__days__day {
+  background-color: #4CAF50;
 }
 
-#nav > div > div > div > div > div.DayPicker-Months > div > div.DayPicker-Body > div > div.DayPicker-Day.DayPicker-Day--selected {
-    background-color: #4CAF50;
+.react-calendar {
+  border: none!important;
 }
 
-input[type=radio] {
-    position: absolute;
-    visibility: hidden;
-    display: none;
-    
-  }
-
-  #historytodlabel {
-    border-radius: 25px;
-    min-width: 30%;;
-    background-color: #e3e7ed;
-    color: black;
-    display: inline-block;
-    font-weight: bold;
-    padding: 10px 20px;
-    font-size: medium;
-  }
-
-  input[type=radio]:checked + #historytodlabel{
-    color:  white;
-    background:  #4CAF50;
-
-
-  }
-
-  #historytod {
-    font-size: medium;
-    padding-top: 5%;
-    border: black;
-    display: inline-block;
-    overflow: hidden;
-    text-align: center;
-    width: 100%;
-  }
+.react-calendar button {
+  font-size: large;
+}

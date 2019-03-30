@@ -1,54 +1,40 @@
-import React from 'react';
-import DayPicker from 'react-day-picker';
+import React, { Component } from 'react';
 import './ChooseADay.css';
+import Calendar from 'react-calendar';
 
 
-import 'react-day-picker/lib/style.css';
-
-export default class ChooseADay extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleDayClick = this.handleDayClick.bind(this);
-    this.state = {
-      selectedDay: null,
-    };
+class ChooseADay extends Component {
+  state = {
+    date: new Date(),
   }
-  handleDayClick(day, { selected }) {
-    this.setState({
-      selectedDay: selected ? undefined : day,
-    });
-    if (day != undefined)
-    {
-            //communicate with API. Find and display the information about the chosen date.
-            fetch('http://127.0.0.1:5001/history/getdayinfo/1/' + "2019-03-25")
+
+  onClickDay = date => this.setState({ date })
+
+  onChange = () => {
+    var d = new Date(this.state.date)
+    d = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate()
+
+    fetch('http://127.0.0.1:5001/history/getdayinfo/1/' + d, {method: 'GET'})
             .then((result) => {
                 return result.text();
             }).then((textResult) => {
                 window.alert(textResult)
             })
-    }
-    
+
   }
 
   render() {
-
     return (
       <div>
-        <DayPicker
-          format="YYYY//MM//DD"
-          selectedDays={this.state.selectedDay}
-          onDayClick={this.handleDayClick}
-          disabledDays={[
-            {
-              after: new Date(),
-            },
-          ]}
-          />
-        <p>
-          {this.state.selectedDay ? this.state.selectedDay.toLocaleDateString() : 'Please Select a Day.'}
-        </p>
-
-        </div>
+        <Calendar
+          onChange={this.onChange}
+          value={this.state.date}
+          maxDate={new Date()}
+          onClickDay = {this.onClickDay}
+        />
+      </div>
     );
   }
 }
+
+export default ChooseADay;
