@@ -17,8 +17,15 @@ class AccountInfo extends React.Component {
   
     handleSubmit() {
         var newpass = this.state.value
-        fetch('http://127.0.0.1:5001/account/changepassword/"' + newpass + '"/1', {method: 'POST'})
-        window.alert('Your Password was successfully changed.');
+        if (newpass.length <= 3)
+        {
+          
+          window.alert('Your Password was could not be changed.');
+        }
+        else {
+          fetch('http://127.0.0.1:5001/account/changepassword/"' + newpass + '"/1', {method: 'POST'})
+          window.alert('Your Password was successfully changed.');
+        }
       
     }
   

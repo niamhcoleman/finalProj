@@ -24,7 +24,9 @@ class CallSelectSymptoms extends React.Component {
       return (
         <div> 
           <p id = "heading"><u>What Symptoms do you Have Today?</u></p>
-          <div onChange = {handleChange('symptoms')}> {elements} </div>
+          <div onChange = {handleChange('symptoms')}> 
+            {elements} 
+          </div>
           
 
           <div id = "buts">
