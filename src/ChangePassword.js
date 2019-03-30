@@ -31,7 +31,7 @@ class AccountInfo extends React.Component {
                 <input type="text" value={this.state.value} onChange={this.handleChange} id = "passchange"/>
             </label>
             <br></br> <br></br> <br></br>
-            <input type="submit" value="Submit" id = "pass_submit"/>
+            <input type="submit" value="Confirm" id = "pass_submit"/>
             </form>
       );
     }

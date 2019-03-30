@@ -40,7 +40,10 @@
   }
 
   #passchange {
-    border-radius: 60px
+    border-radius: 60px;
+    height: 30px;
+    font-size: medium;
+    padding: 5px;
   }
 
   #pass_submit

@@ -6,6 +6,7 @@ import Calendar from 'react-calendar';
 class ChooseADay extends Component {
   state = {
     date: new Date(),
+    response: '',
   }
 
   onClickDay = date => this.setState({ date })
@@ -18,7 +19,7 @@ class ChooseADay extends Component {
             .then((result) => {
                 return result.text();
             }).then((textResult) => {
-                window.alert(textResult)
+              this.setState({response: textResult});
             })
 
   }
@@ -32,6 +33,8 @@ class ChooseADay extends Component {
           maxDate={new Date()}
           onClickDay = {this.onClickDay}
         />
+
+      {this.state.response}
       </div>
     );
   }
