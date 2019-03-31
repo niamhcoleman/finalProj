@@ -1,4 +1,5 @@
 import React from 'react';
+import TrackingForm from './TrackingForm';
 
 class TrackingFinalStep extends React.Component {
 
@@ -11,11 +12,11 @@ class TrackingFinalStep extends React.Component {
 
     if (emo && tod && sym && notes)
     {
-      if (emo == "Happy")
+      if (emo === "Happy")
         {
           var emo_id = 3
         }
-    else if (emo == "ok")
+    else if (emo === "ok")
         {
           var emo_id = 2
         }

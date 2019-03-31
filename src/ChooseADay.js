@@ -6,7 +6,7 @@ import Calendar from 'react-calendar';
 class ChooseADay extends Component {
   state = {
     date: new Date(),
-    response: '',
+    response: 'Please Select a Day.',
   }
 
   onClickDay = date => this.setState({ date })
@@ -15,13 +15,18 @@ class ChooseADay extends Component {
     var d = new Date(this.state.date)
     d = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate()
 
-    fetch('http://127.0.0.1:5001/history/getdayinfo/1/' + d, {method: 'GET'})
-            .then((result) => {
-                return result.text();
-            }).then((textResult) => {
-              this.setState({response: textResult});
-            })
+    fetch('http://127.0.0.1:5001/history/getdayinfo/1/' + d, {method: 'GET'}).then((result) => {
+        return result.text();
+      }).then((textResult) => {
+        if (textResult != "{}\n")
+        {
+          this.setState({response: textResult});
+        }
+        else {
+          this.setState({response: "No Results Found."});
+        }
 
+      })
   }
 
   render() {
