@@ -51,6 +51,8 @@ def getdayinfo(user_id, target_date):
 		result_dict = {}
 
 		query = "SELECT symptom_entry_id FROM entries WHERE user_id = '%s' AND entry_date = '%s' AND entry_tod = '%s';"
+		notesquery = "SELECT notes FROM entries WHERE user_id = '%s' AND entry_date = '%s' AND entry_tod = '%s';"
+		emoquery = "SELECT entry_emo_id FROM entries WHERE user_id = '%s' AND entry_date = '%s' AND entry_tod = '%s';"
 
 		#morning
 		cursor.execute(query % (user_id, target_date, 'morning'))
@@ -85,6 +87,16 @@ def getdayinfo(user_id, target_date):
 				name = result[0][0]
 				x.append([severity,name])
 			result_dict['morning'] = x
+			cursor.execute(notesquery % (user_id, target_date, 'morning'))
+			notes = cursor.fetchall()
+			if notes:
+				result_dict['morning_note'] = notes
+			cursor.execute(emoquery % (user_id, target_date, 'morning'))
+			emo_id = cursor.fetchall()
+			if emo_id:
+				result_dict['morning_emo'] = emo_id
+
+
 
 
 		if afternoon:
@@ -104,6 +116,14 @@ def getdayinfo(user_id, target_date):
 				name = result[0][0]
 				x.append([severity, name])
 			result_dict['afternoon'] = x
+			cursor.execute(notesquery % (user_id, target_date, 'afternoon'))
+			notes = cursor.fetchall()
+			if notes:
+				result_dict['afternoon_note'] = notes
+			cursor.execute(emoquery % (user_id, target_date, 'afternoon'))
+			emo_id = cursor.fetchall()
+			if emo_id:
+				result_dict['afternoon_emo'] = emo_id
 
 		if evening:
 			evening_symptom_entry_id = evening[0][0]
@@ -122,6 +142,14 @@ def getdayinfo(user_id, target_date):
 				name = result[0][0]
 				x.append([severity, name])
 			result_dict['evening'] = x
+			cursor.execute(notesquery % (user_id, target_date, 'evening'))
+			notes = cursor.fetchall()
+			if notes:
+				result_dict['evening_note'] = notes
+			cursor.execute(emoquery % (user_id, target_date, 'evening'))
+			emo_id = cursor.fetchall()
+			if emo_id:
+				result_dict['evening_emo'] = emo_id
 
 
 		if night:
@@ -141,8 +169,19 @@ def getdayinfo(user_id, target_date):
 				name = result[0][0]
 				x.append([severity, name])
 			result_dict['night'] = x
+			cursor.execute(notesquery % (user_id, target_date, 'night'))
+			notes = cursor.fetchall()
+			if notes:
+				result_dict['night_note'] = notes
+			cursor.execute(emoquery % (user_id, target_date, 'night'))
+			emo_id = cursor.fetchall()
+			if emo_id:
+				result_dict['night_emo'] = emo_id
 
 		#result_dict consists of a dict with format: { "evening": [ [ 2, "acne" ], [ 2, "insomnia" ] ], "morning": [ [ 2, "acne" ] ], "night": [ [ 2, "acne" ], [ 2, "insomnia" ] ] }
+
+
+
 
 		return jsonify(result_dict)
 
