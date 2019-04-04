@@ -101,11 +101,7 @@ export class TrackingForm extends Component {
             )
         }
 
-        return(
-            <div>
 
-            </div>
-        )
     }
 }
 

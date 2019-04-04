@@ -29,10 +29,7 @@ class CallSelectSymptoms extends React.Component {
             <Bloat values = {values}/>
             <br></br>
             <Indigestion values = {values}/>
-            {values.symptoms}
-
           </div>
-          
 
           <div id = "buts">
           <button id = "prevBut" onClick = {this.back}>
