@@ -1,5 +1,4 @@
 import React from 'react';
-import TrackingForm from './TrackingForm';
 
 class TrackingFinalStep extends React.Component {
 
@@ -18,20 +17,21 @@ class TrackingFinalStep extends React.Component {
         }
     else if (emo === "ok")
         {
-          var emo_id = 2
+          emo_id = 2
         }
     else 
         {
-          var emo_id = 1
+          emo_id = 1
         }
     
-      fetch('http://127.0.0.1:5001/tracking/logentry?user_id=1&entry_tod=' + tod + '&entry_emo_id=' + emo_id + '&notes=' + notes + '&symptoms=' + sym , {method: 'POST'})
+      fetch('http://127.0.0.1:5001/tracking/logentry?user_id=1&entry_tod=' + tod + '&entry_emo_id=' + emo_id + '&notes=' + notes + sym , {method: 'POST'})
       window.alert("You have successfully logged symptoms.")
       this.props.nextStep();
 
     }
     else {
       window.alert("There was an issue with your form. Please ensure you filled in all steps.")
+      this.props.prevStep();
     }   
   }
 

@@ -12,7 +12,7 @@ class SelectEmotion extends React.Component {
   }
 
   render() {
-    const {values, handleChange} = this.props;
+    const {handleChange} = this.props;
 
     return (
         <div onChange={handleChange('emotion')}>

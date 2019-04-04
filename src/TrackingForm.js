@@ -34,7 +34,12 @@ export class TrackingForm extends Component {
 
 //handle all field changes
     handleChange = input => e => {
+
         this.setState({[input]: e.target.value});
+    }
+
+    handleSymptomChange = input => e => {   
+        this.setState({symptoms: this.state.symptoms + "&symptoms=" + e.target.value});        
     }
 
     
@@ -57,7 +62,7 @@ export class TrackingForm extends Component {
                     <CallSelectSymptoms
                     nextStep={this.nextStep}
                     prevStep={this.prevStep}
-                    handleChange={this.handleChange}
+                    handleSymptomChange={this.handleSymptomChange}
                     values={values}
                     />
                 )
@@ -88,7 +93,7 @@ export class TrackingForm extends Component {
                     values={values}
                     />
                 )
-            case 6: return (
+            default: return (
                 <div>
                     <TrackingForm/>
                 </div>

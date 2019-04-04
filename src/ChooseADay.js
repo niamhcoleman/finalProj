@@ -18,7 +18,7 @@ class ChooseADay extends Component {
     fetch('http://127.0.0.1:5001/history/getdayinfo/1/' + d, {method: 'GET'}).then((result) => {
         return result.text();
       }).then((textResult) => {
-        if (textResult != "{}\n")
+        if (textResult !== "{}\n")
         {
           this.setState({response: textResult});
         }

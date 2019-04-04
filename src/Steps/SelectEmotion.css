@@ -8,10 +8,16 @@
     padding: 10px 20px;
   }
 
-  input[type=radio]:checked + #emotionlabel{
+  #emotionradio > input[type=radio]:checked + #emotionlabel{
     color:  white;
     background:  #4CAF50;
 
+  }
+
+  #emotionradio > input[type=radio] {
+    position: absolute;
+    visibility: hidden;
+    display: none;
   }
 
   #emotionradio {

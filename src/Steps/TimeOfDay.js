@@ -9,7 +9,7 @@ export class TimeOfDay extends Component {
   }
   render() {
     //so I cacn use values as a var instead of this.props.values
-    const {values, handleChange} = this.props;
+    const {handleChange} = this.props;
     return (
       <div>
         <p id = "heading"><u>Please Choose a Time of Day: </u></p>

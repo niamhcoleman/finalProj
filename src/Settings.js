@@ -7,7 +7,6 @@ class Settings extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showButton: false,
       showButton: false
     };
   }

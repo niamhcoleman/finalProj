@@ -1,4 +1,4 @@
-input[type=radio] {
+#timeofdayradio > input[type=radio] {
     position: absolute;
     visibility: hidden;
     display: none;
@@ -14,7 +14,7 @@ input[type=radio] {
     padding: 10px 20px;
   }
 
-  input[type=radio]:checked + #timeofdaylabel{
+  #timeofdayradio > input[type=radio]:checked + #timeofdaylabel{
     color:  white;
     background:  #4CAF50;
 

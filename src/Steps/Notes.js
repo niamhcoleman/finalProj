@@ -13,7 +13,7 @@ class Notes extends React.Component {
     
 
   render() {
-    const {values, handleChange} = this.props;
+    const { handleChange} = this.props;
 
     return (
         <div>
