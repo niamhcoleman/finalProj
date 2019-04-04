@@ -153,9 +153,7 @@ def getdayinfo(user_id, target_date):
 		return error
 
 
-#logging symptoms
-#some of this is still hardcoded i.e. symptoms list
-#rn expects symptoms as list from request. troubleshoot tonight
+# logging symptoms
 @app.route('/tracking/logentry', methods = ['POST'])
 def logentry():
 	try:
@@ -167,7 +165,9 @@ def logentry():
 		notes = request.args["notes"]
 		symptoms = request.args.getlist('symptoms')
 
-		#symptoms contains a list of strings e.g. [ "acne, 2", "insomnia , 2" ]
+
+
+		#symptoms contains a list of strings e.g. [ "acne 2", "insomnia 2" ]
 
 		# symptom_entry_id = max id in table + 1
 		query = "SELECT MAX(sym_entry_id) AS maximum from symptomentry LIMIT 1;"
@@ -183,7 +183,7 @@ def logentry():
 		cursor.execute(query, (user_id, formatted_date, entry_tod, entry_emo_id, new_sym_entry_id, notes))
 		mydb.commit()
 
-		# symptoms contains a list of strings e.g. [ "acne, 2", "insomnia , 2" ]
+		# symptoms contains a list of strings e.g. [ "acne 2", "insomnia 2" ]
 		# this needs to be changed to the format: [['acne', 2], ['insomnia', 2]] i.e. a list of lists
 
 
@@ -206,6 +206,7 @@ def logentry():
 			updatedlist.append([result[0], symptom[1]])
 		# at this point, updated list is a list of lists
 		# with the format: [[symptom id, symptom severity],[symptom id, symptom severity], .....]
+
 
 
 		for record in updatedlist:
