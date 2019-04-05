@@ -244,21 +244,27 @@ class ChooseADay extends Component {
         />
 
       <p id = "response">{this.state.response}</p>
-
+      <hr></hr>
       <p id = "tod_heading">Morning:</p>
       <p id = "info-heading">Symptoms:</p> {this.state.morning_sym}<br/>
       <p id = "info-heading">Notes: </p>{this.state.morning_n}<br/>
       <p id = "info-heading">Emotion(s): </p>{this.state.morning_e}<br/>
+
+      <hr></hr>
 
       <p id = "tod_heading">Afternoon:</p>
       <p id = "info-heading">Symptoms:</p> {this.state.afternoon_sym}<br/>
       <p id = "info-heading">Notes: </p>{this.state.afternoon_n}<br/>
       <p id = "info-heading">Emotion(s): </p>{this.state.afternoon_e}<br/>
 
+      <hr></hr>
+
       <p id = "tod_heading">Evening:</p>
       <p id = "info-heading">Symptoms:</p> {this.state.evening_sym}<br/>
       <p id = "info-heading">Notes: </p>{this.state.evening_n}<br/>
       <p id = "info-heading">Emotion(s): </p>{this.state.evening_e}<br/>
+
+      <hr></hr>
 
       <p id = "tod_heading">Night:</p>
       <p id = "info-heading">Symptoms:</p> {this.state.night_sym}<br/>

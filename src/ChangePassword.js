@@ -32,6 +32,7 @@ class AccountInfo extends React.Component {
     render() {
       return (
             <form onSubmit={this.handleSubmit}>
+            <p id = "accHeading">Change Password:</p><br/>
             <label>
                 New Password:
                 <br></br>
