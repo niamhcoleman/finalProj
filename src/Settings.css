@@ -13,7 +13,7 @@
     text-align: center;
   }
 
-  #changepass {
+#changepass {
     border-radius: 25px;
     min-width: 50%;;
     background-color: #e3e7ed;
@@ -26,12 +26,12 @@
     text-align: center;
   }
 
-  input[type="button"]:active {
+input[type="button"]:active {
     color:  white!important;
     background:  #4CAF50!important;
   }
 
-  #accDiv
+#accDiv
   {
     width:100%;
     padding-top: 25%;
@@ -39,14 +39,14 @@
     text-align: center;
   }
 
-  #passchange {
+#passchange {
     border-radius: 60px;
     height: 30px;
     font-size: medium;
     padding: 5px;
   }
 
-  #pass_submit
+#pass_submit
   {
     border-radius: 25px;
     min-width: 50%;;
@@ -59,5 +59,21 @@
     overflow: hidden;
     text-align: center;
   }
+
+#accHeading {
+    font-size: x-large;
+    font-weight: bold;
+    letter-spacing: 1px; 
+    color: #4CAF50;
+  }
+
+#accInfoHeading {
+  text-align: left!important;
+  font-size: large;
+  padding-left: 10px;
+  padding-right: 5px;
+  font-weight: 500;
+  display: inline-block;
+}
 
 

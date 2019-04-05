@@ -35,7 +35,7 @@ class AccountInfo extends React.Component {
             <label>
                 New Password:
                 <br></br>
-                <input type="text" value={this.state.value} onChange={this.handleChange} id = "passchange"/>
+                <input type="password" value={this.state.value} onChange={this.handleChange} id = "passchange" required/>
             </label>
             <br></br> <br></br> <br></br>
             <input type="submit" value="Confirm" id = "pass_submit"/>

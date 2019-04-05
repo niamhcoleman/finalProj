@@ -9,7 +9,7 @@ class TrackingFinalStep extends React.Component {
    
   apiCall(tod, sym, emo, notes) {
 
-    if (emo && tod && sym && notes)
+    if (emo && tod && sym)
     {
       if (emo === "Happy")
         {
