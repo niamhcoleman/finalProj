@@ -153,7 +153,7 @@ def getdayinfo(user_id, target_date):
 
 
 		if night:
-			night_symptom_entry_id = result[0][0]
+			night_symptom_entry_id = night[0][0]
 			query = "SELECT symptom_entry_sev, sym_id FROM symptomentry WHERE sym_entry_id = '%s';"
 			cursor.execute(query % (night_symptom_entry_id))
 			result = cursor.fetchall()
