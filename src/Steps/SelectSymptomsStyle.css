@@ -3,7 +3,7 @@
 #symptomsdiv {
     width:100%;
     align-content: center;
-    padding-top: 10%;
+    
   }
   
   .container input {
@@ -55,4 +55,9 @@
     width: 100%;
     display: inline-block;
     padding-left: 7px;
+  }
+
+  #responsediv {
+    text-align: center;
+    font-size: large;
   }

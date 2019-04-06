@@ -19,7 +19,7 @@ const Account = () => (
   </div>
 );
 
-const History = ({ match }) => (
+const History = () => (
   <div>
     <ChooseADay/>
   </div>
@@ -39,7 +39,6 @@ const History = ({ match }) => (
           <li>
             <Link to="/History">History</Link>
           </li>
-
           <li>
             <Link to="/Account">Account</Link>
           </li>

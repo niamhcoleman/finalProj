@@ -27,21 +27,21 @@ class ChooseADay extends Component {
 
   onClickDay = date => {
     //reset these values so they don't still appear or stack up when user clicks another/reclicks day
-    this.setState({morning_sym: ""});
-    this.setState({morning_n: ""});
-    this.setState({morning_e: "",})
+    this.setState({morning_sym: " "});
+    this.setState({morning_n: " "});
+    this.setState({morning_e: " ",})
 
-    this.setState({afternoon_sym: ""});
-    this.setState({afternoon_n: ""});
-    this.setState({afternoon_e: "",})
+    this.setState({afternoon_sym: " "});
+    this.setState({afternoon_n: " "});
+    this.setState({afternoon_e: " ",})
 
-    this.setState({evening_sym: ""});
-    this.setState({evening_n: ""});
-    this.setState({evening_e: "",})
+    this.setState({evening_sym: " "});
+    this.setState({evening_n: " "});
+    this.setState({evening_e: " ",})
 
-    this.setState({night_sym: ""});
-    this.setState({night_n: ""});
-    this.setState({night_e: "",})
+    this.setState({night_sym: " "});
+    this.setState({night_n: " "});
+    this.setState({night_e: " ",})
 
     this.setState({ date })
   }
@@ -79,7 +79,7 @@ class ChooseADay extends Component {
           {
             current = x.morning[i];
 
-            this.setState({morning_sym: this.state.morning_sym + " " + current + " "});
+            this.setState({morning_sym: this.state.morning_sym + " " + current + " ,"});
           }
         }
         if (x.morning_note !== undefined)
@@ -88,7 +88,7 @@ class ChooseADay extends Component {
           {
             current = x.morning_note[i];
 
-            this.setState({morning_n: this.state.morning_n + " / " + current + " "});
+            this.setState({morning_n: this.state.morning_n + current + " "});
           }
         }
         if (x.morning_emo !== undefined)
@@ -108,7 +108,7 @@ class ChooseADay extends Component {
             {
               current = "happy";
             }
-            this.setState({morning_e: this.state.morning_e + " / " + current + " "});
+            this.setState({morning_e: this.state.morning_e + current + " "});
           }
         }
 
@@ -119,7 +119,7 @@ class ChooseADay extends Component {
           {
             current = x.afternoon[i];
 
-            this.setState({afternoon_sym: this.state.afternoon_sym + " " + current + " "});
+            this.setState({afternoon_sym: this.state.afternoon_sym + " " + current + " ,"});
           }
         }
         if (x.afternoon_note !== undefined)
@@ -128,7 +128,7 @@ class ChooseADay extends Component {
           {
             current = x.afternoon_note[i];
 
-            this.setState({afternoon_n: this.state.afternoon_n + " / " + current + " "});
+            this.setState({afternoon_n: this.state.afternoon_n + current + " "});
           }
         }
         if (x.afternoon_emo !== undefined)
@@ -148,7 +148,7 @@ class ChooseADay extends Component {
             {
               current = "happy";
             }
-            this.setState({afternoon_e: this.state.afternoon_e + " / " + current + " "});
+            this.setState({afternoon_e: this.state.afternoon_e + current + " "});
           }
         }
 
@@ -159,7 +159,7 @@ class ChooseADay extends Component {
           {
             current = x.evening[i];
 
-            this.setState({evening_sym: this.state.evening_sym + " " + current + " "});
+            this.setState({evening_sym: this.state.evening_sym + " " + current + " ,"});
           }
         }
         if (x.evening_note !== undefined)
@@ -187,7 +187,7 @@ class ChooseADay extends Component {
             {
               current = "happy";
             }
-            this.setState({evening_e: this.state.evening_e + " / " + current + " "});
+            this.setState({evening_e: this.state.evening_e + current + " "});
           }
         }
 
@@ -198,7 +198,7 @@ class ChooseADay extends Component {
           {
             current = x.night[i];
 
-            this.setState({night_sym: this.state.night_sym + " " + current + " "});
+            this.setState({night_sym: this.state.night_sym + " " + current + " ,"});
           }
         }
         if (x.night_note !== undefined)
@@ -226,7 +226,7 @@ class ChooseADay extends Component {
             {
               current = "happy";
             }
-            this.setState({night_e: this.state.night_e + " " + current + "/"});
+            this.setState({night_e: this.state.night_e + " " + current + " "});
           }
         }
       }

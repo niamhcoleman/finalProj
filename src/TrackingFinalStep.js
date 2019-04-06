@@ -30,7 +30,7 @@ class TrackingFinalStep extends React.Component {
 
     }
     else {
-      window.alert("There was an issue with your form. Please ensure you filled in all steps.")
+      window.alert("There was an issue with your form. The following steps are compulsary: time of day, at least one symptom & mood.")
       this.props.prevStep();
     }   
   }

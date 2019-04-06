@@ -30,6 +30,10 @@ class CallSelectSymptoms extends React.Component {
             <br></br>
             <Indigestion values = {values}/>
           </div>
+          <br></br><br></br>
+          <div id = "responsediv">
+          </div>
+          
 
           <div id = "buts">
           <button id = "prevBut" onClick = {this.back}>
