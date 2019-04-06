@@ -85,7 +85,13 @@ def getdayinfo(user_id, target_date):
 				cursor.execute(query % id)
 				result = cursor.fetchall()
 				name = result[0][0]
-				x.append([severity,name])
+				if severity == 1:
+					new_sev = "(low) "
+				elif severity == 2:
+					new_sev = "(moderate) "
+				elif severity == 3:
+					new_sev = "(severe) "
+				x.append([name, new_sev])
 			result_dict['morning'] = x
 			cursor.execute(notesquery % (user_id, target_date, 'morning'))
 			notes = cursor.fetchall()
@@ -114,7 +120,13 @@ def getdayinfo(user_id, target_date):
 				cursor.execute(query % id)
 				result = cursor.fetchall()
 				name = result[0][0]
-				x.append([severity, name])
+				if severity == 1:
+					new_sev = "(low) "
+				elif severity == 2:
+					new_sev = "(moderate) "
+				elif severity == 3:
+					new_sev = "(severe) "
+				x.append([name, new_sev])
 			result_dict['afternoon'] = x
 			cursor.execute(notesquery % (user_id, target_date, 'afternoon'))
 			notes = cursor.fetchall()
@@ -140,7 +152,13 @@ def getdayinfo(user_id, target_date):
 				cursor.execute(query % id)
 				result = cursor.fetchall()
 				name = result[0][0]
-				x.append([severity, name])
+				if severity == 1:
+					new_sev = "(low) "
+				elif severity == 2:
+					new_sev = "(moderate) "
+				elif severity == 3:
+					new_sev = "(severe) "
+				x.append([name, new_sev])
 			result_dict['evening'] = x
 			cursor.execute(notesquery % (user_id, target_date, 'evening'))
 			notes = cursor.fetchall()
@@ -167,7 +185,13 @@ def getdayinfo(user_id, target_date):
 				cursor.execute(query % id)
 				result = cursor.fetchall()
 				name = result[0][0]
-				x.append([severity, name])
+				if severity == 1:
+					new_sev = "(low) "
+				elif severity == 2:
+					new_sev = "(moderate) "
+				elif severity == 3:
+					new_sev = "(severe) "
+				x.append([name,new_sev])
 			result_dict['night'] = x
 			cursor.execute(notesquery % (user_id, target_date, 'night'))
 			notes = cursor.fetchall()
@@ -191,8 +215,88 @@ def getdayinfo(user_id, target_date):
 		error = "{'error': " + str(e) + "}"
 		return error
 
+@app.route('/tracking/checktod/<user_id>/<entry_tod>/', methods = ['GET'])
+def checktod(user_id,entry_tod):
+	try:
+		now = datetime.now()
+		formatted_date = now.strftime('%Y-%m-%d')
 
-# logging symptoms
+		query = "SELECT entry_id FROM entries WHERE user_id = '%s' AND entry_date = '%s' AND entry_tod = '%s';"
+		cursor.execute(query % (user_id, formatted_date, entry_tod))
+		result = cursor.fetchall()
+
+		if not result:
+			return jsonify(False)
+		else:
+			return jsonify(True)
+
+	except Exception as e:
+		error = "{'error': " + str(e) + "}"
+		return error
+
+@app.route('/tracking/getsymptoms/<user_id>/<entry_tod>/', methods=['GET'])
+def getsymptoms(user_id, entry_tod):
+	try:
+		now = datetime.now()
+		formatted_date = now.strftime('%Y-%m-%d')
+
+		query = "SELECT symptom_entry_id FROM entries WHERE user_id = '%s' AND entry_date = '%s' AND entry_tod = '%s';"
+		cursor.execute(query % (user_id, formatted_date, entry_tod))
+		result = cursor.fetchall()
+
+		if not result:
+			return jsonify(False)
+
+		else:
+			symptom_entry_id = result[0][0]
+			query = "SELECT * FROM symptomentry WHERE sym_entry_id = '%s';"
+			cursor.execute(query % symptom_entry_id)
+			result = cursor.fetchall()
+
+			symptoms = []
+			for entry in result:
+				symptoms.append(entry[2])
+
+			#symptoms now contains a list of symptom ids that have already been logged by this user for this date and tod
+
+			symptom_names = []
+			for symptom in symptoms:
+				query = "SELECT sym_name FROM symptoms WHERE sym_id = '%s';"
+				cursor.execute(query % symptom)
+				result = cursor.fetchall()
+				symptom_names.append(result[0][0])
+
+
+			return jsonify(symptom_names)
+
+	except Exception as e:
+		error = "{'error': " + str(e) + "}"
+		return error
+
+@app.route('/tracking/checkemotion/<user_id>/<entry_tod>/', methods=['GET'])
+def checkemotion(user_id, entry_tod):
+	try:
+		now = datetime.now()
+		formatted_date = now.strftime('%Y-%m-%d')
+
+		query = "SELECT entry_emo_id FROM entries WHERE user_id = '%s' AND entry_date = '%s' AND entry_tod = '%s';"
+		cursor.execute(query % (user_id, formatted_date, entry_tod))
+		result = cursor.fetchall()
+
+		if not result:
+			return jsonify(False)
+		else:
+			if result[0][0] == 1:
+				return jsonify("unhappy")
+			elif result[0][0] == 2:
+				return jsonify("okay")
+			elif result[0][0] == 3:
+				return jsonify("happy")
+
+	except Exception as e:
+		error = "{'error': " + str(e) + "}"
+		return error
+
 @app.route('/tracking/logentry', methods = ['POST'])
 def logentry():
 	try:
@@ -204,59 +308,136 @@ def logentry():
 		notes = request.args["notes"]
 		symptoms = request.args.getlist('symptoms')
 
-
-
-		#symptoms contains a list of strings e.g. [ "acne 2", "insomnia 2" ]
-
-		# symptom_entry_id = max id in table + 1
-		query = "SELECT MAX(sym_entry_id) AS maximum from symptomentry LIMIT 1;"
-		cursor.execute(query)
+		query = "SELECT entry_id FROM entries WHERE user_id = '%s' AND entry_date = '%s' AND entry_tod = '%s';"
+		cursor.execute(query  % (user_id, formatted_date, entry_tod))
 		result = cursor.fetchall()
 
-		if result[0][0] is None:
-			new_sym_entry_id = 0
-		else:
-			new_sym_entry_id = result[0][0] + 1
+		#if an entry for that time of day already exists result will contain the entry id
+		#if no entry exists result will contain []
 
-		query = "INSERT INTO entries (user_id, entry_date, entry_tod, entry_emo_id, symptom_entry_id, notes) VALUES (%s, %s, %s, %s, %s, %s);"
-		cursor.execute(query, (user_id, formatted_date, entry_tod, entry_emo_id, new_sym_entry_id, notes))
-		mydb.commit()
+		#if result is empty
+		#there is no previous entry for this tod
+		if not result:
+			# symptom_entry_id = max id in table + 1
+			query = "SELECT MAX(sym_entry_id) AS maximum from symptomentry LIMIT 1;"
+			cursor.execute(query)
+			result = cursor.fetchall()
 
-		# symptoms contains a list of strings e.g. [ "acne 2", "insomnia 2" ]
-		# this needs to be changed to the format: [['acne', 2], ['insomnia', 2]] i.e. a list of lists
+			if result[0][0] is None:
+				new_sym_entry_id = 0
+			else:
+				new_sym_entry_id = result[0][0] + 1
 
-
-		symList = []
-		for symptom in symptoms:
-			x = symptom.split()
-			x[1] = int(x[1])
-			symList.append(x)
-
-		# symList now contains the format : [ [ "acne", 2 ], [ "insomnia,", 2 ] ]
-
-		#symptoms = [['acne', 2], ['insomnia', 2]]
-		updatedlist = []
-
-		for symptom in symList:
-			sym_name = symptom[0]
-			query = "SELECT sym_id FROM symptoms WHERE sym_name = '%s';"
-			cursor.execute(query % sym_name)
-			result = cursor.fetchone()
-			updatedlist.append([result[0], symptom[1]])
-		# at this point, updated list is a list of lists
-		# with the format: [[symptom id, symptom severity],[symptom id, symptom severity], .....]
-
-
-
-		for record in updatedlist:
-			query = "INSERT INTO symptomentry (sym_entry_id, symptom_entry_sev, sym_id) VALUES ( %s, %s, %s);"
-			cursor.execute(query, (new_sym_entry_id, record[1], record[0]))
+			query = "INSERT INTO entries (user_id, entry_date, entry_tod, entry_emo_id, symptom_entry_id, notes) VALUES (%s, %s, %s, %s, %s, %s);"
+			cursor.execute(query, (user_id, formatted_date, entry_tod, entry_emo_id, new_sym_entry_id, notes))
 			mydb.commit()
+
+			# symptoms contains a list of strings e.g. [ "acne 2", "insomnia 2" ]
+			# this needs to be changed to the format: [['acne', 2], ['insomnia', 2]] i.e. a list of lists
+
+			symList = []
+			for symptom in symptoms:
+				x = symptom.split()
+				x[1] = int(x[1])
+				symList.append(x)
+
+			# symList now contains the format : [ [ "acne", 2 ], [ "insomnia,", 2 ] ]
+
+			updatedlist = []
+
+			for symptom in symList:
+				sym_name = symptom[0]
+				query = "SELECT sym_id FROM symptoms WHERE sym_name = '%s';"
+				cursor.execute(query % sym_name)
+				result = cursor.fetchone()
+				updatedlist.append([result[0], symptom[1]])
+			# at this point, updated list is a list of lists
+			# with the format: [[symptom id, symptom severity],[symptom id, symptom severity], .....]
+
+			for record in updatedlist:
+				query = "INSERT INTO symptomentry (sym_entry_id, symptom_entry_sev, sym_id) VALUES ( %s, %s, %s);"
+				cursor.execute(query, (new_sym_entry_id, record[1], record[0]))
+				mydb.commit()
+			return "{'status': 'success'}"
+		else:
+			entry_id = result[0][0]
+
+			# update the emotion
+			query = "UPDATE entries SET entry_emo_id = '%s' WHERE user_id = '%s' AND entry_date = '%s' AND entry_tod = '%s' "
+			cursor.execute(query % (entry_emo_id,user_id, formatted_date, entry_tod))
+			mydb.commit()
+
+			#update the notes only if they have entered notes. This means that blank notes wont override the notes previously entered.
+			if notes:
+				# update the notes
+				query = "UPDATE entries SET notes = '%s' WHERE user_id = '%s' AND entry_date = '%s' AND entry_tod = '%s' "
+				cursor.execute(query % (notes, user_id, formatted_date, entry_tod))
+				mydb.commit()
+
+			query = "SELECT symptom_entry_id FROM entries WHERE user_id = '%s' AND entry_date = '%s' AND entry_tod = '%s';"
+			cursor.execute(query % (user_id, formatted_date, entry_tod))
+			result = cursor.fetchall()
+			symptom_entry_id = result[0][0]
+
+			query = "SELECT * FROM symptomentry WHERE sym_entry_id = '%s';"
+			cursor.execute(query % symptom_entry_id)
+			result = cursor.fetchall()
+
+			#result contains a list of the symptoms already logged for previous entry this tod
+			# list is in format of [[symptom_entry_id, symptom_entry_sev,sym_id] , [....] ]
+
+			#to get rid of the symptom entry id from the list
+			existing_Symptoms = []
+			for entry in result:
+				existing_Symptoms.append([entry[2],entry[1]])
+
+			symList = []
+			for symptom in symptoms:
+				x = symptom.split()
+				x[1] = int(x[1])
+				symList.append(x)
+
+			# symList now contains the format : [ [ "acne", 2 ], [ "insomnia,", 2 ] ]
+
+			newSymptoms = []
+
+			for symptom in symList:
+				sym_name = symptom[0]
+				query = "SELECT sym_id FROM symptoms WHERE sym_name = '%s';"
+				cursor.execute(query % sym_name)
+				result = cursor.fetchone()
+				newSymptoms.append([result[0], symptom[1]])
+
+			#at this point:
+			#existing_Symptoms contains a list in the format of symptom_id, symptom_severity that already EXISTS IN DB for this entry
+			#newSymptoms contains the symptoms that were input by the user VIA UI not yet logged in the format of symptom_id, symptom_severity that already exists in db for this entry
+
+			#to update any existing in the db and have newSymptoms left with only new ones to add to db
+
+			i = []
+			for new in newSymptoms:
+				s_name = new[0]
+				s_sev = new[1]
+
+				for existing in existing_Symptoms:
+					if existing[0] == s_name:
+						i.append(new)
+						query = "UPDATE symptomentry SET symptom_entry_sev = '%s' WHERE sym_entry_id = '%s' AND sym_id = '%s';"
+						cursor.execute(query % (s_sev, symptom_entry_id, s_name))
+						mydb.commit()
+			for entry in i:
+				newSymptoms.remove(entry)
+
+			#newSymptos now contains the entries that are new (didn't need to be updated)
+			for entry in newSymptoms:
+				query = "INSERT INTO symptomentry (sym_entry_id, symptom_entry_sev, sym_id) VALUES ( %s, %s, %s);"
+				cursor.execute(query, (symptom_entry_id, entry[1], entry[0]))
+				mydb.commit()
+
 		return "{'status': 'success'}"
 
 	except Exception as e:
 		error = "{'error': " + str(e) + "}"
-		return error
-
+	return error
 
 app.run(port=5001, debug=True)
